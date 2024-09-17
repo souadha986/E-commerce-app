@@ -99,8 +99,13 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
               child: Container(
-                  //color: Colors.red,
-                  )),
+            child: Center(
+              child: Text(
+                'TIC TAC TOE GAME',
+                style: mytextstyle,
+              ),
+            ),
+          )),
         ]));
   }
 
