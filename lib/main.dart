@@ -1,141 +1,221 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  _MyAppState createState() => _MyAppState();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  Widget build(BuildContext Context) {
-    return MaterialApp(
-        home: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
-      body: Center(
-        child: ListView(
-          children: [
-            Container(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          fillColor: Colors.grey[200],
-                          filled: true,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            size: 30,
-                          ),
-                          hintText: 'Search',
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int equal = 0;
+  int o = 0;
+  int x = 0;
+  var mytextstyle = TextStyle(color: Colors.white, fontSize: 30);
+  var mytextstyle1 = TextStyle(color: Colors.white, fontSize: 20);
+  bool first = true;
+  List<String> display = List.generate(9, (index) => ' ');
+  String winer = '';
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.grey[800],
+        body: Column(children: [
+          Expanded(
+              child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Player O', style: mytextstyle),
+                        Text(
+                          '$o',
+                          style: mytextstyle1,
+                        ),
+                      ],
+                    )),
+                Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Player X', style: mytextstyle),
+                        Text(
+                          '$x',
+                          style: mytextstyle1,
+                        ),
+                      ],
+                    ))
+              ],
+            ),
+          )),
+          Expanded(
+            flex: 4,
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+              ),
+              itemCount: 9,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                    onTap: () {
+                      Tap(index);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: Color.fromARGB(255, 91, 89, 89)),
+                      ),
+                      child: Center(
+                        child: Text(
+                          display[index],
+                          style: TextStyle(color: Colors.white, fontSize: 40),
                         ),
                       ),
-                    ),
-                    Container(
-                      child: Icon(
-                        Icons.menu,
-                        size: 50,
-                      ),
-                      margin: EdgeInsets.only(left: 8, right: 8),
-                    )
-                  ],
-                ),
-                margin: EdgeInsets.only(
-                  left: 25,
-                  // top: 0,
-                )),
-            Container(
-              child: Text(
-                'Categories',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20),
-              ),
-              margin: EdgeInsets.only(top: 40, left: 25),
+                    ));
+              },
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 35,
-                        backgroundColor: Colors.grey[200],
-                        child: Icon(Icons.phone),
-                      ),
-                      Text('phone'),
-                    ],
-                  ),
-                  margin: EdgeInsets.only(left: 25),
-                ),
-                Container(
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 35,
-                        backgroundColor: Colors.grey[200],
-                        child: Icon(Icons.laptop),
-                      ),
-                      Text('laptops'),
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 35,
-                        backgroundColor: Colors.grey[200],
-                        child: Icon(Icons.man),
-                      ),
-                      Text('man'),
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 35,
-                        backgroundColor: Colors.grey[200],
-                        child: Icon(Icons.woman_outlined),
-                      ),
-                      Text('women'),
-                    ],
-                  ),
-                  margin: EdgeInsets.only(right: 12),
-                )
-              ],
-            ),
-            Container(
-              child: Text(
-                'Best things',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20),
-              ),
-              margin: EdgeInsets.only(top: 30, left: 25),
-            ),
-            Row(
-              children: [
-                Card(
-                  child: Container(child: Image.network('')),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    ));
+          ),
+          Expanded(
+              child: Container(
+                  //color: Colors.red,
+                  )),
+        ]));
+  }
+
+  void Tap(int index) {
+    setState(() {});
+    if (first && display[index] == ' ') {
+      display[index] = 'O';
+    } else if (!first && display[index] == ' ') {
+      (display[index] = 'X');
+    }
+    equal++;
+    winner();
+    first = !first;
+  }
+
+  void winner() {
+    if (display[0] == display[1] &&
+        display[1] == display[2] &&
+        display[0] != ' ') {
+      winer = display[0];
+      show();
+    } else if (display[3] == display[4] &&
+        display[4] == display[5] &&
+        display[3] != ' ') {
+      winer = display[3];
+      show();
+    } else if (display[6] == display[7] &&
+        display[7] == display[8] &&
+        display[6] != ' ') {
+      winer = display[6];
+      show();
+    } else if (display[0] == display[3] &&
+        display[3] == display[6] &&
+        display[0] != ' ') {
+      winer = display[0];
+      show();
+    } else if (display[1] == display[4] &&
+        display[4] == display[7] &&
+        display[1] != ' ') {
+      winer = display[1];
+      show();
+    } else if (display[2] == display[5] &&
+        display[5] == display[8] &&
+        display[2] != ' ') {
+      winer = display[2];
+      show();
+    } else if (display[2] == display[4] &&
+        display[4] == display[6] &&
+        display[2] != ' ') {
+      winer = display[2];
+      show();
+    } else if (display[0] == display[4] &&
+        display[4] == display[8] &&
+        display[0] != ' ') {
+      winer = display[0];
+      show();
+    } else if (equal == 9) {
+      showe();
+    }
+  }
+
+  void showe() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('No One Win'),
+            actions: [
+              FloatingActionButton(
+                onPressed: () {
+                  clean();
+
+                  Navigator.of(context).pop();
+                },
+                child: Text('Play Again'),
+              )
+            ],
+          );
+        });
+  }
+
+  void show() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('$winer is the  winner'),
+            actions: [
+              FloatingActionButton(
+                onPressed: () {
+                  clean();
+
+                  Navigator.of(context).pop();
+                },
+                child: Text('Play Again'),
+              )
+            ],
+          );
+        });
+    if (winer == 'O') {
+      o++;
+    } else if (winer == 'X') {
+      x++;
+    }
+  }
+
+  void clean() {
+    int i = 0;
+    setState(() {
+      for (i = 0; i <= 8; i++) {
+        display[i] = ' ';
+      }
+    });
+    equal = 0;
   }
 }
