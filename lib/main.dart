@@ -118,7 +118,7 @@ class _MyAppState extends State<MyApp> {
             ),
             Container(
               child: Text(
-                'Best Selling',
+                'Best things',
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w900,
