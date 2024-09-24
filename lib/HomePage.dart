@@ -187,6 +187,15 @@ class _HomePageState extends State<HomePage> {
                   Navigator.of(context).pop();
                 },
                 child: Text('Play Again'),
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  clean();
+
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                child: Text('cancel'),
               )
             ],
           );
